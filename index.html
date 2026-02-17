@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الهلال الأحمر التنظيمية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background-image: url('https://i.top4top.io/p_3592jzcr01.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            height: 100vh; display: flex; color: white; overflow: hidden; position: relative;
+        }
+        body::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(20, 0, 0, 0.9); z-index: 0; }
+        
+        /* القائمة الجانبية */
+        .sidebar {
+            width: 300px; background: rgba(0, 0, 0, 0.95); border-left: 2px solid #ff3333;
+            display: flex; flex-direction: column; padding: 25px 15px; backdrop-filter: blur(15px); z-index: 10;
+        }
+        .sidebar-logo i { font-size: 50px; color: #ff3333; filter: drop-shadow(0 0 10px #ff0000); text-align: center; display: block; }
+        .sidebar-logo h2 { text-align: center; margin: 10px 0 40px; font-size: 18px; }
+
+        .nav-menu { display: flex; flex-direction: column; gap: 12px; }
+        .nav-item {
+            background: rgba(255, 255, 255, 0.05); padding: 16px 20px; border-radius: 10px;
+            display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1); color: white;
+        }
+        .nav-item:hover, .nav-item.active { background: #ff3333; transform: translateX(-8px); }
+
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; z-index: 10; }
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* الصفحة الرئيسية */
+        .welcome-box { text-align: center; }
+        .logo-wrapper {
+            width: 220px; height: 220px; margin: 0 auto 30px;
+            border-radius: 50%; overflow: hidden; border: 3px solid #ff3333;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+        }
+        .main-logo-gif { width: 100%; height: 100%; object-fit: cover; }
+        .quick-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 900px; margin: 40px auto; }
+        .nav-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 51, 51, 0.2);
+            padding: 30px 20px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .nav-card:hover { background: #ff3333; transform: translateY(-5px); }
+        .nav-card i { font-size: 35px; margin-bottom: 15px; }
+
+        /* تصميم المستندات الجمالي */
+        .docs-container { display: flex; flex-direction: column; gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .doc-box {
+            background: linear-gradient(145deg, rgba(40, 0, 0, 0.8), rgba(20, 0, 0, 0.9));
+            border-right: 4px solid #ff3333; border-radius: 12px; overflow: hidden;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+        }
+        .doc-header { padding: 25px; display: flex; align-items: center; justify-content: space-between; }
+        .doc-header h3 { font-size: 20px; display: flex; align-items: center; gap: 15px; color: #fff; }
+        .doc-header i.main-icon { color: #ff3333; font-size: 24px; }
+        .doc-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: rgba(0, 0, 0, 0.3); }
+        .doc-box.open .doc-body { max-height: 2000px; padding: 25px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .doc-text-content { white-space: pre-line; line-height: 2; color: #e0e0e0; font-size: 15px; text-align: justify; }
+        .highlight-red { color: #ff3333; font-weight: bold; }
+        .chevron { transition: 0.3s; color: #ff3333; }
+        .doc-box.open .chevron { transform: rotate(180deg); }
+
+        /* تصميم الجداول داخل المستندات */
+        .doc-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(0,0,0,0.2); }
+        .doc-table th { background: #ff3333; color: white; padding: 12px; text-align: center; }
+        .doc-table td { border: 1px solid rgba(255,255,255,0.1); padding: 10px; text-align: center; color: #e0e0e0; }
+
+        /* البطاقات العامة (القيادة/المركبات) */
+        .section-header { border-right: 5px solid #ff3333; padding: 10px 15px; margin: 30px 0 20px; background: rgba(255, 255, 255, 0.05); font-size: 20px; border-radius: 0 8px 8px 0; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; color: white; text-decoration: none; transition: 0.3s; }
+        .card:hover { background: rgba(255, 51, 51, 0.1); transform: translateY(-3px); }
+        .e-code { background: #ff3333; padding: 5px 12px; border-radius: 5px; font-weight: bold; font-family: monospace; }
+        
+        .vehicle-card { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; overflow: hidden; transition: 0.4s; text-align: center; }
+        .vehicle-img { width: 100%; height: 160px; object-fit: cover; border-bottom: 2px solid #ff3333; }
+        .vehicle-info { padding: 15px; }
+
+        /* تصميم قسم المخالفات */
+        .violation-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; overflow: hidden; }
+        .violation-table th { background: #ff3333; color: white; padding: 18px; text-align: right; font-size: 18px; }
+        .violation-table td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 14px; line-height: 1.6; }
+        .v-name { color: #fff; font-weight: bold; width: 40%; border-left: 1px solid rgba(255, 255, 255, 0.05); }
+        .v-penalty { color: #e0e0e0; }
+        .special-note { color: #ff3333; font-weight: bold; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #ff3333; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo"><i class="fa-solid fa-house-medical-flag"></i><h2>بوابة الهلال الأحمر</h2></div>
+        <nav class="nav-menu">
+            <div id="btn-home" class="nav-item active" onclick="showSection('home')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></div>
+            <div id="btn-leadership" class="nav-item" onclick="showSection('leadership')"><i class="fa-solid fa-id-card-clip"></i><span>القيادة</span></div>
+            <div id="btn-locations" class="nav-item" onclick="showSection('locations')"><i class="fa-solid fa-map-location-dot"></i><span>المواقع</span></div>
+            <div id="btn-vehicles" class="nav-item" onclick="showSection('vehicles')"><i class="fa-solid fa-truck-medical"></i><span>المركبات</span></div>
+            <div id="btn-docs" class="nav-item" onclick="showSection('docs')"><i class="fa-solid fa-file-signature"></i><span>المستندات</span></div>
+            <div id="btn-violations" class="nav-item" onclick="showSection('violations')"><i class="fa-solid fa-gavel"></i><span>المخالفات</span></div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <div id="home" class="content-section active">
+            <div class="welcome-box">
+                <div class="logo-wrapper">
+                    <img src="https://media.discordapp.net/attachments/1071934566924832848/1391948790851964978/1c544b8e7d362f87.gif?ex=69926dd4&is=69911c54&hm=f3b0f42e1e4aa951aa26796979068b441a6126d70a0090074a6cef10264bf267&=" class="main-logo-gif">
+                </div>
+                <h1>مرحباً بكم في موقع الهلال الأحمر بمقاطعة بوليتو</h1>
+                <div class="quick-nav">
+                    <div class="nav-card" onclick="showSection('leadership')"><i class="fa-solid fa-users-gear"></i><h3>القيادة</h3></div>
+                    <div class="nav-card" onclick="showSection('locations')"><i class="fa-solid fa-link"></i><h3>الأنظمة</h3></div>
+                    <div class="nav-card" onclick="showSection('vehicles')"><i class="fa-solid fa-ambulance"></i><h3>المركبات</h3></div>
+                    <div class="nav-card" onclick="showSection('docs')"><i class="fa-solid fa-file-alt"></i><h3>المستندات</h3></div>
+                    <div class="nav-card" onclick="showSection('violations')"><i class="fa-solid fa-scale-balanced"></i><h3>المخالفات</h3></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="leadership" class="content-section">
+            <h1 style="text-align: center; margin-bottom: 40px;">القيادة</h1>
+            <div class="section-header">القيادة العليا</div>
+            <div class="grid-container">
+                <div class="card"><div><h3>عــبــدالله جــمــال</h3><p>قائد الهلال الأحمر</p></div><div class="e-code">E-001</div></div>
+                <div class="card"><div><h3>تــركـي الــعــجــلان</h3><p>نائب قائد</p></div><div class="e-code">E-002</div></div>
+            </div>
+            <div class="section-header">المساعدين</div>
+            <div class="grid-container">
+                <div class="card"><div><h3>مــازن عــســيــري</h3><p>مساعد قائد</p></div><div class="e-code">E-003</div></div>
+                <div class="card"><div><h3>نــايــف الــحــربــي</h3><p>مساعد قائد</p></div><div class="e-code">E-004</div></div>
+            </div>
+            <div class="section-header">نواب المساعدين</div>
+            <div class="grid-container">
+                <div class="card"><div><h3>حــســام الــجــهــنــي</h3></div><div class="e-code">E-005</div></div>
+                <div class="card"><div><h3>مــصـطــفـى الـبـياتي</h3></div><div class="e-code">E-006</div></div>
+                <div class="card"><div><h3>رامــز بــن مــحـمــد</h3></div><div class="e-code">E-007</div></div>
+                <div class="card"><div><h3>مـحـمـد بـن سـلطـان</h3></div><div class="e-code">E-008</div></div>
+                <div class="card"><div><h3>مـح_مـد الـزهـرانـي</h3></div><div class="e-code">E-009</div></div>
+            </div>
+            <div class="section-header"> مستشارين القيادة</div>
+            <div class="grid-container">
+                <div class="card"><div><h3>أحــلام مــحــمــد</h3></div><div class="e-code">E-O1O</div></div>
+                <div class="card"><div><h3>نــايــف بــن احـمـد</h3></div><div class="e-code">E-011</div></div>
+                <div class="card"><div><h3>عـبـدالـعـزيـز بـن ياسر</h3></div><div class="e-code">E-012</div></div>
+            
+			</div>
+        </div>
+
+        <div id="locations" class="content-section">
+            <h1 style="text-align: center; margin-bottom: 40px;">مواقع الهلال الاحمر</h1>
+            <div class="grid-container">
+                <a href="https://red-crescent-boleto.github.io/Operations-Report/" class="card"><h3>موقع نائب العمليات</h3><div class="e-code">دخول</div></a>
+                <a href="https://red-crescent-boleto.github.io/Field-name/" class="card"><h3>موقع المسمى الميداني</h3><div class="e-code">دخول</div></a>
+            </div>
+        </div>
+
+        <div id="vehicles" class="content-section">
+            <h1 style="text-align: center; margin-bottom: 40px;">أسطول المركبات</h1>
+            <div class="grid-container">
+                <div class="vehicle-card"><img src="https://b.top4top.io/p_3698igkzz1.png" class="vehicle-img"><div class="vehicle-info"><h3>بوكس شفر</h3><p>مستوى متدرب</p></div></div>
+                <div class="vehicle-card"><img src="https://c.top4top.io/p_3698e7hby2.png" class="vehicle-img"><div class="vehicle-info"><h3>ترانزيت فان</h3><p>مستوى 1</p></div></div>
+                <div class="vehicle-card"><img src="https://d.top4top.io/p_3698w29nh3.png" class="vehicle-img"><div class="vehicle-info"><h3>شفر فان</h3><p>مستوى 2</p></div></div>
+                <div class="vehicle-card"><img src="https://e.top4top.io/p_3698d0y2f4.png" class="vehicle-img"><div class="vehicle-info"><h3>اسعاف شفر</h3><p>مستوى 3</p></div></div>
+                <div class="vehicle-card"><img src="https://f.top4top.io/p_3698cdc225.png" class="vehicle-img"><div class="vehicle-info"><h3>تورس 2015</h3><p>مستوى 3</p></div></div>
+                <div class="vehicle-card"><img src="https://k.top4top.io/p_3698mk1vj1.png" class="vehicle-img"><div class="vehicle-info"><h3>تاهو</h3><p>مستوى 4</p></div></div>
+                <div class="vehicle-card"><img src="https://h.top4top.io/p_369897r4x7.png" class="vehicle-img"><div class="vehicle-info"><h3>تورس 2021</h3><p>مستوى 4</p></div></div>
+                <div class="vehicle-card"><img src="https://i.top4top.io/p_3698kk1118.png" class="vehicle-img"><div class="vehicle-info"><h3>فورتشنر</h3><p>مستوى 4 (إشراف)</p></div></div>
+                <div class="vehicle-card"><img src="https://j.top4top.io/p_3698hlepc9.png" class="vehicle-img"><div class="vehicle-info"><h3>جيب باترول</h3><p>مستوى 5</p></div></div>
+                <div class="vehicle-card"><img src="https://k.top4top.io/p_3698dg78x10.png" class="vehicle-img"><div class="vehicle-info"><h3>اف جي FG</h3><p>مستوى 6</p></div></div>
+                <div class="vehicle-card"><img src="https://j.top4top.io/p_3698s17py1.png" class="vehicle-img"><div class="vehicle-info"><h3>جمس دينالي</h3><p>مستوى 7</p></div></div>
+                <div class="vehicle-card"><img src="https://k.top4top.io/p_3698ciek12.png" class="vehicle-img"><div class="vehicle-info"><h3>سكويا تايوتا</h3><p>مستوى 8</p></div></div>
+                <div class="vehicle-card"><img src="https://l.top4top.io/p_3698j70qt3.png" class="vehicle-img"><div class="vehicle-info"><h3>دودج</h3><p>مستوى 9</p></div></div>
+                <div class="vehicle-card"><img src="https://a.top4top.io/p_3698x0txe4.png" class="vehicle-img"><div class="vehicle-info"><h3>الإسعاف المتنقل</h3><p>مستوى 10</p></div></div>
+            </div>
+        </div>
+
+        <div id="docs" class="content-section">
+            <h1 style="text-align: center; margin-bottom: 40px;">مستندات الهلال الأحمر</h1>
+            <div class="docs-container">
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-shield-heart main-icon"></i> أمور يجب فهمها</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+<span class="highlight-red">أولاً:</span> بمجرد قبولك في الهلال الأحمر تصبح موظفاً حكومياً ولا يمكنك تغيير وظيفتك أو الذهاب لشراء مركبة أو استعمال مركبتك الشخصية والتجول في المدينة أو الإجرام بشكل عام إلا بطلب إجازة، وسيتم شرح آلية الإجازات في هذه الدورة.
+<span class="highlight-red">ثانياً:</span> يجب عليك الالتزام ببروتوكولات الراديو وتسجيل الدخول والانضمام، وخلاف ذلك سيتم فصلك وتغريمك.
+<span class="highlight-red">ثالثاً:</span> سيتم شرح كل ما تحتاجه في قطاع الهلال الأحمر في هذا الدليل، بعد ذلك سيكون هنالك اختبار نظري للتأكد من فهمك للدليل.
+<span class="highlight-red">رابعاً:</span> بعد قبولك بشكل رسمي يجب عليك فهم أنك لا تمثل نفسك، بل تمثل قطاع الهلال الأحمر كاملاً بمن فيهم القيادات وزملائك، لذلك نرجو منك الالتزام، وفي حال ليس لديك رغبة بالالتزام يجب عليك مغادرة التوظيف حالاً.</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-tower-broadcast main-icon"></i> تردد الموجات</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+عموم وحدات لوس سانتوس: تتواجد داخل موجة 13.
+عموم وحدات ساندي وبوليتو: تتواجد داخل موجة 14.
+الموجة 4: الأمن العام (عمليات لوس سانتوس)
+الموجة 5: الأمن العام (عمليات ساندي وبوليتو)
+الموجة 6: الأمن العام (شعبة المرور)
+الموجة 7: أمن الطرق
+الموجة 8، 9، 21: أمن المنشآت
+الموجة 12: الرقابة والتفتيش (في حالة مشاهدة هاك فقط)
+الموجة 13: الهلال الأحمر (وحدات لوس سانتوس)
+الموجة 14: الهلال الأحمر (وحدات ساندي وبوليتو)
+الموجة 15، 16، 25، 26: حرس الحدود
+الموجة 17: الميكانيك 
+الموجة 18: الميكانيك</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-truck-fast main-icon"></i> آلية المباشرة في الميدان</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+1️⃣ يجب عليك تسجيل الدخول في دفتر الحضور.
+2️⃣ يجب عليك التوجه إلى روم العمليات لطلب التوجيه والمباشرة بالميدان.
+3️⃣ تسجيل الدخول في المستشفى.
+4️⃣ تغيير المسمى الميداني حسب التوجيه ويكون كالتالي: <span class="highlight-red">التوجيه | الكود الوظيفي</span> (مثال: لام 4 | E-413).
+5️⃣ في حال كتابة كود 7 يكون المسمى الميداني: كود 7 | لام 4 | E-413.
+6️⃣ التوجه لأقرب مستشفى وإخراج المركبة من الكراج المخصص.
+7️⃣ الدخول للموجة.
+8️⃣ التوجه للموقع المحدد لك من العمليات والتوقف عند نقطة ثابتة.</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-file-medical main-icon"></i> أكواد الحالات</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+<span class="highlight-red">كود 1:</span> يذكر عند تمام جاهزيتك للمباشرة بالميدان بعد التأكد من الطعام والشراب، توفر العدد الإسعافية وتصليح المركبة ووصولك لموقع توجيهك.
+<span class="highlight-red">كود 3:</span> يذكر للعمليات عند مباشرة موقع يتواجد فيه 3 مسقطين أو أكثر (مسعفين، عساكر، ميكانيك، مواطنين) مع ذكر الموقع.
+<span class="highlight-red">كود 3:</span> يذكر للعمليات عند مباشرة موقع يتواجد فيه 3 مسقطين أو أكثر (مسعفين، عساكر، ميكانيك، مواطنين) مع ذكر الموقع.
+<span class="highlight-red">كود 4:</span> يذكر في حال احتاج مرور من نداء استغاثه بشرط يكون الموقع امن.
+<span class="highlight-red">كود 6:</span> يذكر عند حاجتك للتزود بعدة الإسعافات الأولية، أو لاستلام الترقية أو المركبة الجديدة.
+<span class="highlight-red">كود 7:</span> يذكر عند حاجتك للغفوة أو الابتعاد عن الجهاز لمدة لا تزيد عن 15 دقيقة.
+<span class="highlight-red">كود 8:</span> يذكر عند مشاهدة مسقط يحمل سلاحاً (مسدس، سكين، شوزن) ليمنحك العمليات الإذن بالذهاب لموجة الأمن العام.
+<span class="highlight-red">الحالة 70:</span> تذكر عند وقوع خلل تقني عام أو خاص (إنترنت أو كراش).
+<span class="highlight-red">كود 2:</span> في حال وجود شخص مسقط في مكان تابع لي وحده البحث و الانقاذ مع ذكر الموقع للعمليات.</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-triangle-exclamation main-icon"></i> تعليمات هامة</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+• عدم إنعاش المصابين في منتصف الشارع، يجب حملهم إلى أقرب رصيف.
+• عدم تمرير الاستفسارات العامة من خلال الموجة (التوجه لروم العمليات).
+• يجب الإطلاع على التحديثات الهامة للهلال الأحمر قبل الدخول والمباشرة.
+• في حال مباشرتك للحالات المسقطة على أطراف نداء الاستغاثة بدون توجيه، يعتبر مخالفة.
+• يمنع منعاً باتاً وضع أي نوع من التفاعل (الريأكشن) على جميع تحديثات القطاع.
+• لا يحق لأي قطاع آخر أن يأمرك بدخول نداء الاستغاثة.
+• تسجيل دخولك دون تشغيل التصوير يحملك كامل المسؤولية.
+• يمنع قيادة مركبتك الخاصة تحت أي ظرف دون طلب إجازة.
+• أولوية الإنعاش للمسقطين: <span class="highlight-red">مسعف - عسكري - ميكانيكي - مواطن.</span>
+• ممنوع المباشرة في موقع إطلاق النار ومغادرة الموقع فوراً.
+• يمنع منشن @الهلال الأحمر أو @here أو @everyone.</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-plane-departure main-icon"></i> نظام الإجازات</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body">
+                        <div class="doc-text-content">
+ <span class="highlight-red">إجازات داخلية:</span> لا يسمح لحاملي رتبة متدرب بطلبها
+ <span class="highlight-red">إجازات داخلية:</span> لحاملي رتبة مستوى 1 فأعلى. يجب سداد المخالفات قبل الطلب.
+<span class="highlight-red">إجازات داخلية:</span> يتقدم المسعف بطلبها في حالة رغبته بالتواجد كمواطن لفترة محدودة وآلية معينة .
+<span class="highlight-red">إجازات خارجية:</span> للغياب من 3 إلى 21 يوماً متواصلة خارج المقاطعة.
+
+يمكن لحاملي رتبة مستوى 1 فأعلى طلبها .
+
+يجب سداد المخالفات إن وجدت أثناء طلبك للإجازة .
+
+لا يمكنك طلب إجازة مرتين في نفس اليوم أو تمديد الإجازة
+
+{ بين كل إجازة 24 ساعة } .
+
+يمكن طلبها في الأيام التالية { الأحد - الثلاثاء - الجمعة } بشروط وهي :
+
+توفر 20 وحده في الميدان { دون احتساب المشرفين و القيادة } .
+
+يمكن طلبها في الأيام التالية { السبت - الاثنين - الأربعاء - الخميس } بشروط وهي :
+
+اتمام 3 ساعات عمل متتالية في نفس اليوم + توفر 20 وحده في الميدان { دون احتساب المشرفين و القيادة } .
+                        </div>
+                        <table class="doc-table">
+                            <thead>
+                                <tr><th>المستوى</th><th>يتجدد الرصيد كل يوم أحد الساعة 12 ص</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>مستوى 1</td><td>14 ساعة</td></tr>
+                                <tr><td>مستوى 2</td><td>16 ساعة</td></tr>
+                                <tr><td>مستوى 3</td><td>18 ساعة</td></tr>
+                                <tr><td>مستوى 4</td><td>20 ساعة</td></tr>
+                                <tr><td>مستوى 5</td><td>22 ساعة</td></tr>
+                                <tr><td>مستوى 6</td><td>24 ساعة</td></tr>
+                                <tr><td>مستوى 7</td><td>26 ساعة</td></tr>
+                                <tr><td>مستوى 8</td><td>28 ساعة</td></tr>
+                                <tr><td>مستوى 9</td><td>30 ساعة</td></tr>
+                                <tr><td>مستوى 10</td><td>35 ساعة</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-arrow-up-right-dots main-icon"></i> نظام الترقيات</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body">
+                        <table class="doc-table">
+                            <thead>
+                                <tr><th>الرتبة</th><th>متطلبات الترقية حسب رتبتك</th><th>زمن الترقية</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>من متدرب الى مستوى 1</td><td>7 ايام من تعيينك + 5 ايام تواجد + اجتياز دورة العمليات</td><td>7 ايام</td></tr>
+                                <tr><td>من مستوى 1 الى مستوى 2</td><td>14 يوم من تاريخ اخر ترقية + 10 يوم تواجد + 15 تقرير عمليات</td><td>14 يوم</td></tr>
+                                <tr><td>من مستوى 2 الى مستوى 3</td><td>21 يوم من تاريخ اخر ترقية + 15 يوم تواجد + 25 تقرير عمليات</td><td>21 يوم</td></tr>
+                                <tr><td>من مستوى 3 الى مستوى 4</td><td>28 يوم من تاريخ اخر ترقية + 20 يوم تواجد + 30 تقرير عمليات</td><td>28 يوم (ترشيح)</td></tr>
+                                <tr><td>من مستوى 4 الى مستوى 5</td><td>(الإشراف الميداني) عمر 18+ + ترشيح القيادة</td><td>ترشيح</td></tr>
+                                <tr><td>من مستوى 5 الى مستوى 6</td><td>ترشيح القيادة</td><td>ترشيح</td></tr>
+                                <tr><td>من مستوى 6 الى مستوى 7</td><td>ترشيح القيادة ( شؤون الهلال الأحمر )</td><td>ترشيح</td></tr>
+                                <tr><td>من مستوى 7 الى مستوى 8</td><td>ترشيح القيادة ( الإشراف العام )</td><td>ترشيح</td></tr>
+                                <tr><td>من مستوى 8 الى مستوى 9</td><td>ترشيح القيادة</td><td>ترشيح</td></tr>
+                                <tr><td>من مستوى 9 الى مستوى 10</td><td>ترشيح القيادة</td><td>ترشيح</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="highlight-red">ملاحظة : الشروط وزمن الترقية قابلة للتعديل.</p>
+                    </div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-star-of-life main-icon"></i> نظام ترقيات المعتمدين</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body">
+                        <table class="doc-table">
+                            <thead>
+                                <tr><th>الترقية</th><th>متطلباتها</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>من متدرب الى مستوى 1</td><td>3 ايام تواجد + دورة عمليات</td></tr>
+                                <tr><td>من مستوى 1 الى مستوى 2</td><td>7 أيام تواجد + 5 تقارير عمليات</td></tr>
+                                <tr><td>من مستوى 2 الى مستوى 3</td><td>12 يوم تواجد + 10 تقارير عمليات</td></tr>
+                                <tr><td>من مستوى 3 الى مستوى 4</td><td>14 يوم تواجد + 20 تقرير عمليات</td></tr>
+                                <tr><td>من مستوى 4 الى مستوى 5</td><td>ترشيح من القيادة (الإشراف الميداني)</td></tr>
+                                <tr><td>من مستوى 5 الى مستوى 6</td><td>ترشيح من القيادة</td></tr>
+                                <tr><td>من مستوى 6 الى مستوى 7</td><td>ترشيح من القيادة ( شؤون الهلال الأحمر )</td></tr>
+                                <tr><td>من مستوى 7 الى مستوى 8</td><td>ترشيح من القيادة ( الإشراف العام )</td></tr>
+                                <tr><td>من مستوى 8 الى مستوى 9</td><td>ترشيح من القيادة</td></tr>
+                                <tr><td>من مستوى 9 الى مستوى 10</td><td>ترشيح من القيادة</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="violations" class="content-section">
+            <h1 style="text-align: center; margin-bottom: 40px;">لائحة المخالفات والجزاءات التفصيلية</h1>
+
+            <div class="section-header">مخالفات الفصل</div>
+            <table class="violation-table">
+                <thead><tr><th>نوع المخالفة</th><th>الجزاء المقرر</th></tr></thead>
+                <tbody>
+<tr><td class="v-name">استقالة فترة تدريب</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">صدم المتعمد لغرض الانعاش</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر</td></tr>
+                    <tr><td class="v-name">عدم احترام القيادة / المشرفين <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">استقالة قبل الرجوع من الاجازة الداخلية</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">تهرب وظيفي</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">تخريب سيناريو</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر</td></tr>
+                    <tr><td class="v-name">اعتراض على قرار قيادة</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">سب وقذف</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر + باند نهائي</td></tr>
+                    <tr><td class="v-name">اللعن بأي شكل من الأشكال</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر + باند 14 يوم</td></tr>
+                    <tr><td class="v-name">تدبيل انعاش</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر + باند نهائي وتصفير</td></tr>
+                    <tr><td class="v-name">تخريب بوظيفة الهلال الاحمر</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر + باند 14 يوم</td></tr>
+                    <tr><td class="v-name">الاجرام بوظيفة الهلال الاحمر</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر + باند 14 يوم</td></tr>
+                    <tr><td class="v-name">استخدام الرتبة للمصلحة الشخصية <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر</td></tr>
+                    <tr><td class="v-name">عدم العودة للوظيفة بعد انتهاء اجازة خارجية <span class="special-note">(خاص بمسؤول الترقيات)</span></td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 5 ايام</td></tr>
+                    <tr><td class="v-name">دخول غير شرعي</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + نهائي من الهلال الاحمر</td></tr>
+                    <tr><td class="v-name">تلفيت من الديسكورد</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم + باند 3 ايام</td></tr>
+                    <tr><td class="v-name">عدم تواجد <span class="special-note">(خاص بمسؤول الترقيات)</span></td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">عدم تواجد <span class="special-note">(المشرفين)</span></td><td class="v-penalty">انذار نهائي بكسر رتبة + غرامة بقيمة 1,000,000</td></tr>
+                    <tr><td class="v-name">كثرة المخالفات</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">رتبة عليا في مدينة اخرى</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                    <tr><td class="v-name">مخالفة قوانين المقاطعة</td><td class="v-penalty">فصل + غرامة بقيمة 1,000,000 + منع من التوظيف 14 يوم</td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">مخالفات 750 الف</div>
+            <table class="violation-table">
+                <thead><tr><th>نوع المخالفة</th><th>الجزاء المقرر</th></tr></thead>
+                <tbody>
+                    <tr><td class="v-name">صدم مواطنين بشكل متعمد ومستمر</td><td class="v-penalty">كسر رتبة + انذار نهائي بالفصل + غرامة مليون</td></tr>
+                    <tr><td class="v-name">تشويه سمعة الهلال الاحمر بأي شكل من الأشكال</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 750 الف</td></tr>
+                    <tr><td class="v-name">الانتداب بدون اخذ الاذن <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + غرامة بقيمة 750 الف</td></tr>
+                    <tr><td class="v-name">حضور توظيف بدون اخذ الاذن من القيادة</td><td class="v-penalty">انذار اول + غرامة بقيمة 750 الف</td></tr>
+                    <tr><td class="v-name">مضايقة الكادر النسائي بأي شكل من الأشكال</td><td class="v-penalty">كسر رتبة + انذار اول + غرامة بقيمة 750 الف</td></tr>
+                    <tr><td class="v-name">الاستهبال بالميدان <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">كسر رتبة + انذار اول + غرامة بقيمة 750 الف</td></tr>
+                    <tr><td class="v-name">حمل ممنوعات واسلحة</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 750 الف + سحب الممنوعات</td></tr>
+                    <tr><td class="v-name">المباشرة في المجرمين قبل العساكر</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 750 الف</td></tr>
+                    <tr><td class="v-name">رفض استلام مهام طاقم العمليات</td><td class="v-penalty">انذار اول + سحب رول العمليات + تأخير ترقية + غرامة بقيمة 750 الف</td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">مخالفات 500 الف</div>
+            <table class="violation-table">
+                <thead><tr><th>نوع المخالفة</th><th>الجزاء المقرر</th></tr></thead>
+                <tbody>
+                    <tr><td class="v-name">مباشرة في مركبة غير مخصصة لك</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">الاستقبال في روم العمليات</td><td class="v-penalty">انذار اول + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">الدخول لروم الكادر النسائي <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">تظليل مركبة حكومية</td><td class="v-penalty">انذار اول + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">الدخول لموجة الرقابة</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">دخول برنامج الدولة لطلب الانعاش وقت الاجازة <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">المباشرة في المجرمين بدون اذن العساكر (داخل الميناء)</td><td class="v-penalty">انذار اول + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">عدم الإلتزام بقوانين الإجازة الداخلية <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">التوجه لكراج التعديل والتزويد بدون اذن</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">التوجه لمعرض السيارات بدون اذن</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">المباشرة في موقع غير آمن</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">اهانة اي شخص بالمقاطعة</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">التلاعب في دفتر الحضور <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">التلاعب على مسؤولين الترقيات <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">التدخل في الشؤون الادارية</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">الرد بطريقة غير مناسبة بالموجة</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">كثرة الشكاوي عليه</td><td class="v-penalty">انذار نهائي بالفصل + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">التأخر في العودة للوظيفة بعد انتهاء الاجازة الداخلية</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">سجن رقابي بوظيفة الهلال الاحمر <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">الافك او الغفوة اكثر من 15 دقيقة</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">الخروج مشتركة <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار أول + كسر رتبة + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">عدم طلب كود 3 <span class="special-note">(يطبق على المشرفين)</span></td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">اسلوب غير لائق</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">التدخل في شؤون القطاعات الاخرى</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                    <tr><td class="v-name">دخول استنفار أمني أو المباشرة بدون اذن</td><td class="v-penalty">انذار اول + تأخير ترقية + غرامة بقيمة 500 الف</td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">مخالفات 300 الف</div>
+            <table class="violation-table">
+                <thead><tr><th>نوع المخالفة</th><th>الجزاء المقرر</th></tr></thead>
+                <tbody>
+                    <tr><td class="v-name">التأخير بالوصول للمسقطين</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">مخالفة قوانين التكت</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">عدم اعطاء الكود الميداني</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">عدم المباشرة بعد مرور 5 دقائق من طلب كود 8</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">عدم التزام ببروتوكولات الراديو</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">اثارة الجدل في الشات العام</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">ازعاج منسوبي الشؤون الإدارية</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">رفض توجيه العمليات</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">مباشرة بدون تسجيل دخول (دفتر الحضور او عند العمليات او بالمستشفى)</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">مباشرة في موقع غير موجه لك</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">المباشرة بدون الدخول للموجة</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">عدم تسليم العمليات عند الخروج</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">منشن الرقابة في رسائل الهلال الاحمر او التكتات</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">اهمال الراديو</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">عدم الإلتزام في قوانين الهلال الأحمر</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">عدم طلب كود 8</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">الكتابة أثناء المنع او التنقيط</td><td class="v-penalty">انذار اول + غرامة بقيمة 300 الف</td></tr>
+                    <tr><td class="v-name">الاعتراض على مخالفة صحيحة</td><td class="v-penalty">انذار اول + غرامة دبل المخالفة الاساسية</td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-header">مخالفات 200 الف</div>
+            <table class="violation-table">
+                <thead><tr><th>نوع المخالفة</th><th>الجزاء المقرر</th></tr></thead>
+                <tbody>
+                    <tr><td class="v-name">قيادة غير واقعية</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
+                    <tr><td class="v-name">اهمال مركبة</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
+                    <tr><td class="v-name">تسجيل خروج بدون ابلاغ طاقم العمليات</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
+                    <tr><td class="v-name">عدم تغيير الاسم في الفايف ام</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
+                    <tr><td class="v-name">فتح تكت تظلم غير صحيح</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
+                    <tr><td class="v-name">اركات مواطن معه في سيارة الاسعاف</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
+                    <tr><td class="v-name">عدم الحضور للأستدعاء</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف + مخالفة سبب الاستدعاء</td></tr>                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            const activeBtn = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
+            if(activeBtn) activeBtn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
