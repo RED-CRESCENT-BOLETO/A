@@ -8,7 +8,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body {
-            background-image: url('https://i.top4top.io/p_3592jzcr01.jpg');
             background-size: cover; background-position: center; background-attachment: fixed;
             height: 100vh; display: flex; color: white; overflow: hidden; position: relative;
         }
@@ -20,7 +19,7 @@
             display: flex; flex-direction: column; padding: 25px 15px; backdrop-filter: blur(15px); z-index: 10;
         }
         .sidebar-logo i { font-size: 50px; color: #ff3333; filter: drop-shadow(0 0 10px #ff0000); text-align: center; display: block; }
-        .sidebar-logo h2 { text-align: center; margin: 10px 0 40px; font-size: 18px; }
+        .sidebar-logo h2 { text-align: center; margin: 10px 0 60px; font-size: 30px; }
 
         .nav-menu { display: flex; flex-direction: column; gap: 12px; }
         .nav-item {
@@ -107,7 +106,7 @@
 <body>
 
     <aside class="sidebar">
-        <div class="sidebar-logo"><i class="fa-solid fa-house-medical-flag"></i><h2>بوابة الهلال الأحمر</h2></div>
+        <div class="sidebar-logo"><i class="fa-solid fa-house-medical-flag"></i><h2>الهلال الأحمر</h2></div>
         <nav class="nav-menu">
             <div id="btn-home" class="nav-item active" onclick="showSection('home')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></div>
             <div id="btn-leadership" class="nav-item" onclick="showSection('leadership')"><i class="fa-solid fa-id-card-clip"></i><span>القيادة</span></div>
@@ -132,6 +131,7 @@
                     <div class="nav-card" onclick="showSection('locations')"><i class="fa-solid fa-link"></i><h3>الأنظمة</h3></div>
                     <div class="nav-card" onclick="showSection('vehicles')"><i class="fa-solid fa-ambulance"></i><h3>المركبات</h3></div>
                     <div class="nav-card" onclick="showSection('docs')"><i class="fa-solid fa-file-alt"></i><h3>المستندات</h3></div>
+                    <div class="nav-card" onclick="showSection('maps')"><i class="fa-solid fa-map"></i><h3>الخرائط</h3></div>
                     <div class="nav-card" onclick="showSection('violations')"><i class="fa-solid fa-scale-balanced"></i><h3>المخالفات</h3></div>
                 </div>
             </div>
@@ -152,16 +152,16 @@
             <div class="section-header">نواب المساعدين</div>
             <div class="grid-container">
                 <div class="card"><div><h3>حــســام الــجــهــنــي</h3></div><div class="e-code">E-005</div></div>
-                <div class="card"><div><h3>مــصـطــفـى الـبـياتي</h3></div><div class="e-code">E-006</div></div>
+                <div class="card"><div><h3>مــصـطــفـى الـب_ياتي</h3></div><div class="e-code">E-006</div></div>
                 <div class="card"><div><h3>رامــز بــن مــحـمــد</h3></div><div class="e-code">E-007</div></div>
                 <div class="card"><div><h3>مـحمـد بـن سـلطـان</h3></div><div class="e-code">E-008</div></div>
                 <div class="card"><div><h3>مـحمـد الـزهـرانـي</h3></div><div class="e-code">E-009</div></div>
             </div>
-            <div class="section-header"> مستشارين القيادة</div>
+            <div class="section-header"> المستشارين </div>
             <div class="grid-container">
                 <div class="card"><div><h3>أحــلام مــحــمــد</h3></div><div class="e-code">E-O1O</div></div>
                 <div class="card"><div><h3>نــايــف بــن احـمـد</h3></div><div class="e-code">E-011</div></div>
-                <div class="card"><div><h3>عـبـدالـعـزيـز بـن ياسر</h3></div><div class="e-code">E-012</div></div>
+                <div class="card"><div><h3>عـبـدالـع_زي_ز بـن ياسر</h3></div><div class="e-code">E-012</div></div>
             </div>
         </div>
 
@@ -177,19 +177,25 @@
         <div id="vehicles" class="content-section">
             <h1 style="text-align: center; margin-bottom: 40px;">أسطول المركبات</h1>
             <div class="grid-container">
+                <div class="vehicle-card"><img src="https://d.top4top.io/p_3700ppkqx1.png" class="vehicle-img"><div class="vehicle-info"><h3>لوسيد الهلال الاحمر متجر</h3><p>جميع الرتب مسموحه</p></div></div>
                 <div class="vehicle-card"><img src="https://b.top4top.io/p_3698igkzz1.png" class="vehicle-img"><div class="vehicle-info"><h3>بوكس شفر</h3><p>مستوى متدرب</p></div></div>
                 <div class="vehicle-card"><img src="https://c.top4top.io/p_3698e7hby2.png" class="vehicle-img"><div class="vehicle-info"><h3>ترانزيت فان</h3><p>مستوى 1</p></div></div>
                 <div class="vehicle-card"><img src="https://d.top4top.io/p_3698w29nh3.png" class="vehicle-img"><div class="vehicle-info"><h3>شفر فان</h3><p>مستوى 2</p></div></div>
                 <div class="vehicle-card"><img src="https://e.top4top.io/p_3698d0y2f4.png" class="vehicle-img"><div class="vehicle-info"><h3>اسعاف شفر</h3><p>مستوى 3</p></div></div>
-                <div class="vehicle-card"><img src="https://f.top4top.io/p_3698cdc225.png" class="vehicle-img"><div class="vehicle-info"><h3>تورس 2015</h3><p>مستوى 3</p></div></div>
+                <div class="vehicle-card"><img src="https://f.top4top.io/p_3698cdc225.png" class="vehicle-img"><div class="vehicle-info"><h3> تورس 2015</h3><p>مستوى 3</p></div></div>
+                <div class="vehicle-card"><img src="https://i.top4top.io/p_3700hol8v1.png" class="vehicle-img"><div class="vehicle-info"><h3>هيلكوبترالبحث والانقاذ</h3><p>مستوى 3</p></div></div>
+                <div class="vehicle-card"><img src="https://j.top4top.io/p_37009638r1.png" class="vehicle-img"><div class="vehicle-info"><h3>فوردالبحث والانقاذ</h3><p>مستوى 3</p></div></div>
                 <div class="vehicle-card"><img src="https://k.top4top.io/p_3698mk1vj1.png" class="vehicle-img"><div class="vehicle-info"><h3>تاهو</h3><p>مستوى 4</p></div></div>
                 <div class="vehicle-card"><img src="https://h.top4top.io/p_369897r4x7.png" class="vehicle-img"><div class="vehicle-info"><h3>تورس 2021</h3><p>مستوى 4</p></div></div>
                 <div class="vehicle-card"><img src="https://i.top4top.io/p_3698kk1118.png" class="vehicle-img"><div class="vehicle-info"><h3>فورتشنر</h3><p>مستوى 4 (إشراف)</p></div></div>
+                <div class="vehicle-card"><img src="https://e.top4top.io/p_37008gjk71.png" class="vehicle-img"><div class="vehicle-info"><h3>F150فورد</h3><p>مستوى 4 (إشراف)</p></div></div>
                 <div class="vehicle-card"><img src="https://j.top4top.io/p_3698hlepc9.png" class="vehicle-img"><div class="vehicle-info"><h3>جيب باترول</h3><p>مستوى 5</p></div></div>
-                <div class="vehicle-card"><img src="https://k.top4top.io/p_3698dg78x10.png" class="vehicle-img"><div class="vehicle-info"><h3>اف جي FG</h3><p>مستوى 6</p></div></div>
+                <div class="vehicle-card"><img src="https://k.top4top.io/p_3698dg78x10.png" class="vehicle-img"><div class="vehicle-info"><h3>اف جي</h3><p>مستوى 6</p></div></div>
                 <div class="vehicle-card"><img src="https://j.top4top.io/p_3698s17py1.png" class="vehicle-img"><div class="vehicle-info"><h3>جمس دينالي</h3><p>مستوى 7</p></div></div>
                 <div class="vehicle-card"><img src="https://k.top4top.io/p_3698ciek12.png" class="vehicle-img"><div class="vehicle-info"><h3>سكويا تايوتا</h3><p>مستوى 8</p></div></div>
-                <div class="vehicle-card"><img src="https://l.top4top.io/p_3698j70qt3.png" class="vehicle-img"><div class="vehicle-info"><h3>دودج</h3><p>مستوى 9</p></div></div>
+                <div class="vehicle-card"><img src="https://l.top4top.io/p_3698j70qt3.png" class="vehicle-img"><div class="vehicle-info"><h3>دودج</h3><p>مستوى 8</p></div></div>                
+                <div class="vehicle-card"><img src="https://l.top4top.io/p_3700xo6qf1.png" class="vehicle-img"><div class="vehicle-info"><h3>تاهو البحث و الانقاذ</h3><p>مستوى 9</p></div></div>
+                <div class="vehicle-card"><img src="https://b.top4top.io/p_3700weufk1.png" class="vehicle-img"><div class="vehicle-info"><h3>دودج رام</h3><p>مستوى10</p></div></div>
                 <div class="vehicle-card"><img src="https://a.top4top.io/p_3698x0txe4.png" class="vehicle-img"><div class="vehicle-info"><h3>الإسعاف المتنقل</h3><p>مستوى 10</p></div></div>
             </div>
         </div>
@@ -264,6 +270,59 @@
 • أولوية الإنعاش للمسقطين: <span class="highlight-red">مسعف - عسكري - ميكانيكي - مواطن.</span>
 • ممنوع المباشرة في موقع إطلاق النار ومغادرة الموقع فوراً.
 • يمنع منشن @الهلال الأحمر أو @here أو @everyone.</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-door-open main-icon"></i> نظام الاستقالات</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+<span class="highlight-red">لا يسمح لحاملي رتبة متدرب أو مستوى 1 بطلبها</span>
+في حال الإصرار على الاستقالة وأنت تحمل رتبة <span class="highlight-red">متدرب</span> يترتب عليها:
+غرامة بقيمة $1,000,000 و منع التوظيف لمدة 14 يوم للوظائف المعتمدة
+وفي حال الإصرار على الاستقالة وأنت تحمل رتبة <span class="highlight-red">مستوى 1</span> يترتب عليها :
+غرامة بقيمة $500,000 و منع التوظيف لمدة 7 يوم للوظائف المعتمدة</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-circle-exclamation main-icon"></i> المخالفات الشائعة</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+• القيادة الغير واقعية مثل ( السرعة - تفحيط - عكس سير - طلوع اوف رود - الخ ) .
+• مقاطعة البلاغات عدم ترك 5 ثوان بين بلاغ وآخر.
+• تشويه سمعة القطاع بأي شكل من الأشكال.
+• عدم كتابة أو تحديث المسمى في الـ FiveM.
+• مباشرة في موقع غير الموجه لك.
+• التواجد في روم العمليات أكثر من 3 دقائق.
+• عدم الحضور للإستدعاء.
+• دخول نداء استغاثة أو استنفار أمني بدون إذن.
+• مباشرة في موقع غير امن.
+• الأفك او كود 7 ( أكثر من 10 دقائق ).
+• إهمال المركبة.
+• مباشرة بدون توجيه.
+• إركاب مواطن في مركبة الإسعاف .
+• التهرب الوظيفي.
+• تدبيل الإنعاش.
+• الأسلوب الغير اللائق.
+• الخروج وحدة مشتركة.
+• المباشرة في البحار والجبال.</div></div>
+                </div>
+
+                <div class="doc-box" onclick="this.classList.toggle('open')">
+                    <div class="doc-header"><h3><i class="fa-solid fa-calendar-check main-icon"></i> آلية التواجد والترشيح</h3><i class="fa-solid fa-chevron-down chevron"></i></div>
+                    <div class="doc-body"><div class="doc-text-content">
+<span class="highlight-red">آلية احتساب ايام التواجد:</span>
+• يجب ان يكون بين تسجيل الدخول والخروج في اليوم الواحد ساعة على الأقل.
+• يجب تسجيل الدخول والخروج في دفتر الحضور ساعة كاملة على الاقل.
+• في حال نسيان تسجيل الدخول او الخروج لن يتم احتساب اليوم.
+<span class="highlight-red">تنويه:</span> في حال عدم تسجيل الدخول او الخروج 3 ايام متتالية في دفتر الحضور يترتب على ذلك مخالفة الفصل من القطاع.
+
+<span class="highlight-red">آلية اعلان ترشيح الترقيات:</span>
+• يتم استقبال طلبات الترشيح حسب اعلان الترشيح في روم ( إعلانات الدورات ) في يوم الثلاثاء.
+• ويتم الإعلان عن الأسماء في يوم الخميس.
+
+<span class="highlight-red">ضوابط الترشيح:</span>
+• في حال حضور مرشح غير مستوفي للشروط تصدر له ( غرامة وإنذار ).
+• يمكنك فتح تكت ( تظلم من ترقية ) في حال عدم قدرتك على الحضور خلال فترة الدورة لأسباب طارئة بشرط اتمامك كافة الشروط.
+• <span class="highlight-red">تحذير:</span> في حال فتح تكت تظلم من ترقية دون اكماللك لكافة الشروط سيحرر لك مخالفة فورية.
+• <span class="highlight-red">تنويه:</span> يجب على جميع الراغبين بحضور الترشيح والترقية حضور دورة العمليات المقامة كل يوم جمعة.</div></div>
                 </div>
 
                 <div class="doc-box" onclick="this.classList.toggle('open')">
@@ -355,6 +414,7 @@
                                 <tr><td>من مستوى 9 الى مستوى 10</td><td>ترشيح من القيادة</td></tr>
                             </tbody>
                         </table>
+                        <p class="highlight-red">ملاحظة : الشروط وزمن الترقية قابلة للتعديل.</p>
                     </div>
                 </div>
             </div>
