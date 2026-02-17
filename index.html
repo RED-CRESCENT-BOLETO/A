@@ -94,6 +94,14 @@
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #ff3333; border-radius: 10px; }
+
+        /* إضافات الخرائط المنفصلة لعدم تخريب الستايل */
+        .map-overlay { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); }
+        .map-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #mapZoomImg { max-width: 90%; max-height: 90%; cursor: grab; transition: transform 0.1s ease; }
+        #mapZoomImg:active { cursor: grabbing; }
+        .close-map { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 10000; }
+        .close-map:hover { color: #ff3333; }
     </style>
 </head>
 <body>
@@ -106,6 +114,7 @@
             <div id="btn-locations" class="nav-item" onclick="showSection('locations')"><i class="fa-solid fa-map-location-dot"></i><span>المواقع</span></div>
             <div id="btn-vehicles" class="nav-item" onclick="showSection('vehicles')"><i class="fa-solid fa-truck-medical"></i><span>المركبات</span></div>
             <div id="btn-docs" class="nav-item" onclick="showSection('docs')"><i class="fa-solid fa-file-signature"></i><span>المستندات</span></div>
+            <div id="btn-maps" class="nav-item" onclick="showSection('maps')"><i class="fa-solid fa-map"></i><span>الخرائط</span></div>
             <div id="btn-violations" class="nav-item" onclick="showSection('violations')"><i class="fa-solid fa-gavel"></i><span>المخالفات</span></div>
         </nav>
     </aside>
@@ -145,16 +154,15 @@
                 <div class="card"><div><h3>حــســام الــجــهــنــي</h3></div><div class="e-code">E-005</div></div>
                 <div class="card"><div><h3>مــصـطــفـى الـبـياتي</h3></div><div class="e-code">E-006</div></div>
                 <div class="card"><div><h3>رامــز بــن مــحـمــد</h3></div><div class="e-code">E-007</div></div>
-                <div class="card"><div><h3>مـحـمـد بـن سـلطـان</h3></div><div class="e-code">E-008</div></div>
-                <div class="card"><div><h3>مـح_مـد الـزهـرانـي</h3></div><div class="e-code">E-009</div></div>
+                <div class="card"><div><h3>مـحمـد بـن سـلطـان</h3></div><div class="e-code">E-008</div></div>
+                <div class="card"><div><h3>مـحمـد الـزهـرانـي</h3></div><div class="e-code">E-009</div></div>
             </div>
             <div class="section-header"> مستشارين القيادة</div>
             <div class="grid-container">
                 <div class="card"><div><h3>أحــلام مــحــمــد</h3></div><div class="e-code">E-O1O</div></div>
                 <div class="card"><div><h3>نــايــف بــن احـمـد</h3></div><div class="e-code">E-011</div></div>
                 <div class="card"><div><h3>عـبـدالـعـزيـز بـن ياسر</h3></div><div class="e-code">E-012</div></div>
-            
-			</div>
+            </div>
         </div>
 
         <div id="locations" class="content-section">
@@ -352,6 +360,24 @@
             </div>
         </div>
 
+        <div id="maps" class="content-section">
+            <h1 style="text-align: center; margin-bottom: 40px;">الخرائط</h1>
+            <div class="grid-container">
+                <div class="card" style="padding: 10px; cursor: pointer;" onclick="viewMap('https://h.top4top.io/p_3700vr5rs1.png')">
+                    <img src="https://h.top4top.io/p_3700vr5rs1.png" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                </div>
+                <div class="card" style="padding: 10px; cursor: pointer;" onclick="viewMap('https://i.top4top.io/p_3700bt2402.png')">
+                    <img src="https://i.top4top.io/p_3700bt2402.png" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                </div>
+                <div class="card" style="padding: 10px; cursor: pointer;" onclick="viewMap('https://j.top4top.io/p_3700pxmy53.png')">
+                    <img src="https://j.top4top.io/p_3700pxmy53.png" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                </div>
+                <div class="card" style="padding: 10px; cursor: pointer;" onclick="viewMap('https://k.top4top.io/p_37001bfj34.png')">
+                    <img src="https://k.top4top.io/p_37001bfj34.png" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+                </div>
+            </div>
+        </div>
+
         <div id="violations" class="content-section">
             <h1 style="text-align: center; margin-bottom: 40px;">لائحة المخالفات والجزاءات التفصيلية</h1>
 
@@ -455,21 +481,15 @@
                     <tr><td class="v-name">الاعتراض على مخالفة صحيحة</td><td class="v-penalty">انذار اول + غرامة دبل المخالفة الاساسية</td></tr>
                 </tbody>
             </table>
-
-            <div class="section-header">مخالفات 200 الف</div>
-            <table class="violation-table">
-                <thead><tr><th>نوع المخالفة</th><th>الجزاء المقرر</th></tr></thead>
-                <tbody>
-                    <tr><td class="v-name">قيادة غير واقعية</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
-                    <tr><td class="v-name">اهمال مركبة</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
-                    <tr><td class="v-name">تسجيل خروج بدون ابلاغ طاقم العمليات</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
-                    <tr><td class="v-name">عدم تغيير الاسم في الفايف ام</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
-                    <tr><td class="v-name">فتح تكت تظلم غير صحيح</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
-                    <tr><td class="v-name">اركات مواطن معه في سيارة الاسعاف</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف</td></tr>
-                    <tr><td class="v-name">عدم الحضور للأستدعاء</td><td class="v-penalty">انذار اول + غرامة بقيمة 200 الف + مخالفة سبب الاستدعاء</td></tr>                </tbody>
-            </table>
         </div>
     </main>
+
+    <div id="mapModal" class="map-overlay" onclick="handleOutsideClick(event)">
+        <span class="close-map" onclick="closeMap()">&times;</span>
+        <div class="map-wrapper">
+            <img id="mapZoomImg" src="" onwheel="doZoom(event)">
+        </div>
+    </div>
 
     <script>
         function showSection(sectionId) {
@@ -484,8 +504,61 @@
             const activeBtn = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
             if(activeBtn) activeBtn.classList.add('active');
         }
+
+        /* برمجة الخرائط */
+        let currentScale = 1;
+        let isPanning = false;
+        let startX, startY, x = 0, y = 0;
+
+        function viewMap(src) {
+            const modal = document.getElementById('mapModal');
+            const img = document.getElementById('mapZoomImg');
+            modal.style.display = 'block';
+            img.src = src;
+            currentScale = 1; x = 0; y = 0;
+            updateTransform();
+        }
+
+        function closeMap() {
+            document.getElementById('mapModal').style.display = 'none';
+        }
+
+        function updateTransform() {
+            const img = document.getElementById('mapZoomImg');
+            img.style.transform = `translate(${x}px, ${y}px) scale(${currentScale})`;
+        }
+
+        function doZoom(e) {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.8 : 1.2;
+            currentScale *= delta;
+            currentScale = Math.min(Math.max(0.5, currentScale), 8);
+            updateTransform();
+        }
+
+        const img = document.getElementById('mapZoomImg');
+        img.onmousedown = (e) => {
+            isPanning = true;
+            startX = e.clientX - x;
+            startY = e.clientY - y;
+        };
+        window.onmousemove = (e) => {
+            if (!isPanning) return;
+            x = e.clientX - startX;
+            y = e.clientY - startY;
+            updateTransform();
+        };
+        window.onmouseup = () => isPanning = false;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeMap();
+        });
+
+        function handleOutsideClick(e) {
+            if (e.target.id === 'mapModal' || e.target.className === 'map-wrapper') {
+                closeMap();
+            }
+        }
     </script>
 </body>
 </html>
-
-
