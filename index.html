@@ -6,104 +6,323 @@
     <title>بوابة الهلال الأحمر التنظيمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        /* ========================================================
+           BEYOND GOD TIER - SPATIAL LIQUID GLASS UI (2026)
+           ======================================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@200;300;400;500;600;700&display=swap');
+
+        :root {
+            --base-dark: #000000;
+            --blood-red: #d90429;
+            --neon-red: #ef233c;
+            --glass-panel: rgba(12, 12, 14, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shine: rgba(255, 255, 255, 0.03);
+            --text-pure: #ffffff;
+            --text-dim: #9aa0a6;
+            --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-core: 0 40px 80px -20px rgba(0,0,0,1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Readex Pro', sans-serif; -webkit-font-smoothing: antialiased; }
+
         body {
-            background-size: cover; background-position: center; background-attachment: fixed;
-            height: 100vh; display: flex; color: white; overflow: hidden; position: relative;
+            background-color: var(--base-dark); height: 100vh; display: flex; color: var(--text-pure);
+            overflow: hidden; padding: 25px; gap: 25px; position: relative; perspective: 2000px;
         }
-        body::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(20, 0, 0, 0.9); z-index: 0; }
+
+        /* ---------------- السحر الحقيقي: خلفية سائلة وتتوهج ---------------- */
+        body::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(20, 0, 0, 1) 0%, var(--base-dark) 50%);
+            z-index: -3;
+        }
         
-        /* القائمة الجانبية */
+        /* كرات النيون العائمة خلف الزجاج */
+        body::after {
+            content: ''; position: absolute; width: 50vw; height: 50vh;
+            background: var(--blood-red); filter: blur(180px); opacity: 0.15;
+            border-radius: 50%; top: 20%; left: 30%;
+            animation: liquidBreathe 12s var(--ease-apple) infinite alternate; z-index: -2;
+        }
+
+        .ambient-orb {
+            position: absolute; width: 40vw; height: 40vw;
+            background: #ff003c; filter: blur(200px); opacity: 0.08;
+            border-radius: 50%; bottom: -10%; right: -10%;
+            animation: liquidBreathe 15s var(--ease-apple) infinite alternate-reverse; z-index: -2;
+        }
+
+        @keyframes liquidBreathe { 0% { transform: scale(0.8) translate(0, 0); } 100% { transform: scale(1.2) translate(10%, -10%); } }
+
+        /* ---------------- القائمة الجانبية (هولوجرام بلوري) ---------------- */
         .sidebar {
-            width: 300px; background: rgba(0, 0, 0, 0.95); border-left: 2px solid #ff3333;
-            display: flex; flex-direction: column; padding: 25px 15px; backdrop-filter: blur(15px); z-index: 10;
+            width: 340px; height: 100%;
+            background: var(--glass-panel);
+            backdrop-filter: blur(50px) saturate(200%); -webkit-backdrop-filter: blur(50px) saturate(200%);
+            border: 1px solid var(--glass-border); border-radius: 40px;
+            padding: 50px 30px; display: flex; flex-direction: column; z-index: 10;
+            box-shadow: var(--shadow-core), inset 0 1px 1px rgba(255,255,255,0.15), inset 0 -1px 1px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
         }
-        .sidebar-logo i { font-size: 50px; color: #ff3333; filter: drop-shadow(0 0 10px #ff0000); text-align: center; display: block; }
-        .sidebar-logo h2 { text-align: center; margin: 10px 0 60px; font-size: 30px; }
 
-        .nav-menu { display: flex; flex-direction: column; gap: 12px; }
-        .nav-item {
-            background: rgba(255, 255, 255, 0.05); padding: 16px 20px; border-radius: 10px;
-            display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1); color: white;
+        .sidebar-logo { text-align: center; margin-bottom: 60px; position: relative; }
+        .sidebar-logo i { 
+            font-size: 70px; color: var(--neon-red); 
+            filter: drop-shadow(0 0 35px rgba(239, 35, 60, 0.6));
+            background: linear-gradient(135deg, #ff4d4d, #b30000);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: pulseLogo 4s ease-in-out infinite; margin-bottom: 20px;
         }
-        .nav-item:hover, .nav-item.active { background: #ff3333; transform: translateX(-8px); }
-
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; z-index: 10; }
-        .content-section { display: none; }
-        .content-section.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* الصفحة الرئيسية */
-        .welcome-box { text-align: center; }
-        .logo-wrapper {
-            width: 220px; height: 220px; margin: 0 auto 30px;
-            border-radius: 50%; overflow: hidden; border: 3px solid #ff3333;
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
-        }
-        .main-logo-gif { width: 100%; height: 100%; object-fit: cover; }
-        .quick-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 900px; margin: 40px auto; }
-        .nav-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 51, 51, 0.2);
-            padding: 30px 20px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s;
-        }
-        .nav-card:hover { background: #ff3333; transform: translateY(-5px); }
-        .nav-card i { font-size: 35px; margin-bottom: 15px; }
-
-        /* تصميم المستندات الجمالي */
-        .docs-container { display: flex; flex-direction: column; gap: 20px; max-width: 1000px; margin: 0 auto; }
-        .doc-box {
-            background: linear-gradient(145deg, rgba(40, 0, 0, 0.8), rgba(20, 0, 0, 0.9));
-            border-right: 4px solid #ff3333; border-radius: 12px; overflow: hidden;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
-        }
-        .doc-header { padding: 25px; display: flex; align-items: center; justify-content: space-between; }
-        .doc-header h3 { font-size: 20px; display: flex; align-items: center; gap: 15px; color: #fff; }
-        .doc-header i.main-icon { color: #ff3333; font-size: 24px; }
-        .doc-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: rgba(0, 0, 0, 0.3); }
-        .doc-box.open .doc-body { max-height: 2000px; padding: 25px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .doc-text-content { white-space: pre-line; line-height: 2; color: #e0e0e0; font-size: 15px; text-align: justify; }
-        .highlight-red { color: #ff3333; font-weight: bold; }
-        .chevron { transition: 0.3s; color: #ff3333; }
-        .doc-box.open .chevron { transform: rotate(180deg); }
-
-        /* تصميم الجداول داخل المستندات */
-        .doc-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: rgba(0,0,0,0.2); }
-        .doc-table th { background: #ff3333; color: white; padding: 12px; text-align: center; }
-        .doc-table td { border: 1px solid rgba(255,255,255,0.1); padding: 10px; text-align: center; color: #e0e0e0; }
-
-        /* البطاقات العامة (القيادة/المركبات) */
-        .section-header { border-right: 5px solid #ff3333; padding: 10px 15px; margin: 30px 0 20px; background: rgba(255, 255, 255, 0.05); font-size: 20px; border-radius: 0 8px 8px 0; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; color: white; text-decoration: none; transition: 0.3s; }
-        .card:hover { background: rgba(255, 51, 51, 0.1); transform: translateY(-3px); }
-        .e-code { background: #ff3333; padding: 5px 12px; border-radius: 5px; font-weight: bold; font-family: monospace; }
         
-        .vehicle-card { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; overflow: hidden; transition: 0.4s; text-align: center; }
-        .vehicle-img { width: 100%; height: 160px; object-fit: cover; border-bottom: 2px solid #ff3333; }
-        .vehicle-info { padding: 15px; }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px rgba(239, 35, 60, 0.6)); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 50px rgba(239, 35, 60, 0.9)); } }
 
-        /* تصميم قسم المخالفات */
-        .violation-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; overflow: hidden; }
-        .violation-table th { background: #ff3333; color: white; padding: 18px; text-align: right; font-size: 18px; }
-        .violation-table td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 14px; line-height: 1.6; }
-        .v-name { color: #fff; font-weight: bold; width: 40%; border-left: 1px solid rgba(255, 255, 255, 0.05); }
-        .v-penalty { color: #e0e0e0; }
-        .special-note { color: #ff3333; font-weight: bold; }
+        .sidebar-logo h2 { 
+            font-size: 24px; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase; color: var(--text-pure);
+        }
 
+        .nav-menu { display: flex; flex-direction: column; gap: 10px; }
+        
+        .nav-item {
+            padding: 20px 25px; border-radius: 24px; display: flex; align-items: center; gap: 20px; 
+            cursor: pointer; transition: var(--ease-apple) 0.6s;
+            color: var(--text-dim); font-weight: 500; font-size: 17px;
+            position: relative; border: 1px solid transparent; overflow: hidden;
+        }
+
+        /* تفاعل الإضاءة عند التحويم (Magnetic Glow) */
+        .nav-item::before {
+            content: ''; position: absolute; width: 0%; height: 100%; top: 0; left: 0;
+            background: linear-gradient(90deg, rgba(239, 35, 60, 0.15), transparent);
+            transition: width 0.6s var(--ease-apple); z-index: -1;
+        }
+        .nav-item:hover::before, .nav-item.active::before { width: 100%; }
+
+        .nav-item:hover, .nav-item.active { 
+            color: var(--text-pure); transform: translateX(-10px);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(239, 35, 60, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 20px rgba(239, 35, 60, 0.1);
+        }
+        .nav-item.active { border-right: 4px solid var(--neon-red); }
+
+        .nav-item i { font-size: 24px; transition: 0.5s; opacity: 0.7; }
+        .nav-item:hover i, .nav-item.active i { color: var(--neon-red); opacity: 1; filter: drop-shadow(0 0 12px var(--neon-red)); transform: scale(1.1); }
+
+        /* ---------------- المحتوى الرئيسي (المسرح المكاني) ---------------- */
+        .main-content { 
+            flex: 1; height: 100%; border-radius: 40px;
+            background: var(--glass-panel);
+            backdrop-filter: blur(50px) saturate(200%); -webkit-backdrop-filter: blur(50px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            padding: 70px 90px; overflow-y: auto; z-index: 10;
+            box-shadow: var(--shadow-core), inset 0 1px 1px rgba(255,255,255,0.15);
+            scroll-behavior: smooth; position: relative;
+        }
+        
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: spaceReveal 1s var(--ease-apple) forwards; }
+        
+        @keyframes spaceReveal { 
+            from { opacity: 0; transform: translateY(60px) scale(0.95); filter: blur(20px); } 
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+        }
+
+        /* ---------------- العناوين (نحت بالضوء) ---------------- */
+        h1 { 
+            text-align: center; margin-bottom: 70px; font-size: 50px; font-weight: 700; 
+            letter-spacing: -1px; background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
+        }
+
+        .section-header { 
+            display: flex; align-items: center; gap: 20px;
+            font-size: 24px; font-weight: 600; color: var(--text-pure);
+            margin: 70px 0 40px; padding-right: 20px; position: relative;
+        }
+        .section-header::before {
+            content: ''; position: absolute; right: 0; top: 10%; height: 80%; width: 6px;
+            background: var(--neon-red); border-radius: 10px;
+            box-shadow: 0 0 20px var(--neon-red);
+        }
+        .section-header::after {
+            content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(239, 35, 60, 0.4), transparent);
+        }
+
+        /* ---------------- البطاقات (الجاذبية الكهرومغناطيسية) ---------------- */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 35px; perspective: 2000px; }
+        
+        .nav-card, .card, .vehicle-card {
+            background: rgba(20, 20, 25, 0.5);
+            border: 1px solid var(--glass-border); border-radius: 30px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+            transition: var(--ease-apple) 0.8s; position: relative; overflow: hidden;
+            transform-style: preserve-3d; cursor: pointer; text-decoration: none; color: white;
+            backdrop-filter: blur(20px);
+        }
+
+        /* إضاءة تتبع الماوس وهمية بالـ CSS */
+        .nav-card::before, .card::before, .vehicle-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 50%);
+            opacity: 0; transition: 0.8s var(--ease-apple); pointer-events: none;
+        }
+
+        .nav-card:hover::before, .card:hover::before, .vehicle-card:hover::before { opacity: 1; transform: translate(10%, 10%); }
+
+        .nav-card:hover, .card:hover, .vehicle-card:hover { 
+            transform: translateY(-15px) scale(1.03); 
+            border-color: rgba(239, 35, 60, 0.5);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.9), 0 0 50px rgba(239, 35, 60, 0.15);
+            background: rgba(30, 25, 30, 0.7);
+        }
+
+        .card { padding: 40px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .card h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .card p { color: var(--text-dim); font-size: 16px; font-weight: 400; }
+        
+        .e-code { 
+            background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border);
+            color: var(--neon-red); padding: 12px 20px; border-radius: 16px; 
+            font-weight: 700; font-family: monospace; font-size: 16px; letter-spacing: 1px;
+            box-shadow: inset 0 0 20px rgba(239, 35, 60, 0.1);
+        }
+
+        /* ---------------- بطاقات المركبات (Showroom Style) ---------------- */
+        .vehicle-card { padding: 0; display: flex; flex-direction: column; }
+        .vehicle-img { 
+            width: 100%; height: 240px; object-fit: cover; 
+            border-bottom: 1px solid var(--glass-border);
+            transition: var(--ease-apple) 1s; filter: grayscale(100%) brightness(0.5);
+        }
+        .vehicle-card:hover .vehicle-img { 
+            filter: grayscale(0%) brightness(1.05); transform: scale(1.08);
+            border-bottom: 1px solid var(--neon-red);
+        }
+        .vehicle-info { padding: 30px; text-align: center; background: rgba(10,10,12,0.95); position: relative; z-index: 2; flex: 1; }
+        .vehicle-info h3 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 8px;}
+        .vehicle-info p { font-size: 15px; color: var(--neon-red); font-weight: 500; }
+
+        /* ---------------- المستندات (مجلدات الواقع المعزز) ---------------- */
+        .docs-container { display: flex; flex-direction: column; gap: 30px; max-width: 1200px; margin: 0 auto; }
+        
+        .doc-box {
+            background: rgba(20,20,25,0.4); border: 1px solid var(--glass-border);
+            border-radius: 28px; overflow: hidden; transition: var(--ease-apple) 0.6s; cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        
+        .doc-box:hover { background: rgba(30,30,35,0.6); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .doc-box.open { border-color: rgba(239, 35, 60, 0.4); box-shadow: 0 0 50px rgba(239, 35, 60, 0.1); background: rgba(15,10,15,0.8); }
+        
+        .doc-header { padding: 35px 40px; display: flex; align-items: center; justify-content: space-between; }
+        .doc-header h3 { font-size: 24px; display: flex; align-items: center; gap: 20px; font-weight: 600; color: #fff; }
+        .doc-header i.main-icon { 
+            color: var(--text-pure); font-size: 28px; 
+            background: linear-gradient(135deg, var(--neon-red), var(--blood-red));
+            padding: 18px; border-radius: 20px; box-shadow: 0 10px 20px rgba(239, 35, 60, 0.3);
+        }
+        
+        .doc-body { max-height: 0; overflow: hidden; transition: max-height 1s var(--ease-apple); opacity: 0; }
+        .doc-box.open .doc-body { max-height: 4000px; padding: 40px 50px; border-top: 1px solid rgba(255,255,255,0.05); opacity: 1; }
+        .doc-text-content { white-space: pre-line; line-height: 2.6; color: #b5b5c3; font-size: 18px; font-weight: 400; text-align: justify;}
+        .highlight-red { color: #fff; font-weight: 600; background: rgba(239, 35, 60, 0.8); padding: 2px 12px; border-radius: 8px; box-shadow: 0 4px 10px rgba(239, 35, 60, 0.4); }
+        
+        .chevron { transition: var(--ease-apple) 0.6s; color: var(--text-dim); font-size: 28px; }
+        .doc-box.open .chevron { transform: rotate(180deg); color: var(--neon-red); filter: drop-shadow(0 0 15px var(--neon-red)); }
+
+        /* ---------------- الجداول (كبسولات البيانات العائمة المذهلة) ---------------- */
+        .violation-table, .doc-table { 
+            width: 100%; border-collapse: separate; border-spacing: 0 18px; margin-bottom: 50px; 
+        }
+        
+        .violation-table th, .doc-table th { 
+            background: transparent; color: var(--text-dim); 
+            padding: 10px 35px; text-align: right; font-size: 14px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        
+        .violation-table tr, .doc-table tr { transition: var(--ease-apple) 0.5s; cursor: default; }
+        
+        .violation-table td, .doc-table td { 
+            padding: 30px 35px; font-size: 17px; font-weight: 500; line-height: 1.8; color: var(--text-pure);
+            background: rgba(25,25,30,0.4); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+        }
+        
+        .violation-table td:first-child, .doc-table td:first-child { 
+            border-radius: 0 24px 24px 0; border-right: 1px solid var(--glass-border); 
+        }
+        .violation-table td:last-child, .doc-table td:last-child { 
+            border-radius: 24px 0 0 24px; border-left: 1px solid var(--glass-border); 
+        }
+        
+        .violation-table tr:hover, .doc-table tr:hover { transform: scale(1.02) translateX(-10px); }
+        .violation-table tr:hover td, .doc-table tr:hover td { 
+            background: rgba(40,20,25,0.6); border-color: rgba(239, 35, 60, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .violation-table tr:hover td:first-child, .doc-table tr:hover td:first-child { border-right: 4px solid var(--neon-red); }
+        
+        .v-name { color: #fff; font-weight: 700; width: 45%; font-size: 20px; }
+        .v-penalty { color: #a1a1aa; }
+        .special-note { color: #fff; font-size: 14px; background: rgba(239, 35, 60, 0.8); padding: 6px 14px; border-radius: 10px; font-weight: 600; box-shadow: 0 5px 15px rgba(239,35,60,0.3);}
+
+        /* ---------------- لوحة الترحيب (The Hero Section) ---------------- */
+        .welcome-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; }
+        .logo-wrapper {
+            width: 300px; height: 300px; margin: 0 auto 60px; position: relative;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        .logo-wrapper::before {
+            content: ""; position: absolute; inset: -10px; border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, rgba(239, 35, 60, 0.8) 50%, transparent 100%);
+            animation: radarSpin 4s linear infinite; filter: blur(15px); z-index: 1;
+        }
+        .logo-wrapper::after {
+            content: ""; position: absolute; inset: 0; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1); z-index: 3;
+        }
+        @keyframes radarSpin { 100% { transform: rotate(360deg); } }
+        
+        .main-logo-gif { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 2; box-shadow: 0 0 80px rgba(0,0,0,0.9); }
+        
+        .quick-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; max-width: 1200px; margin: 70px auto 0; width: 100%; }
+        .quick-nav .nav-card { padding: 50px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .quick-nav .nav-card i { font-size: 55px; margin-bottom: 30px; color: var(--text-dim); transition: 0.6s var(--ease-apple); }
+        .quick-nav .nav-card:hover i { color: var(--text-pure); filter: drop-shadow(0 0 30px var(--neon-red)); transform: scale(1.3) translateY(-15px); }
+        .quick-nav .nav-card h3 { font-size: 26px; font-weight: 700; }
+
+        /* ---------------- Scrollbar (Invisible Tech) ---------------- */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #ff3333; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; margin: 40px 0; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 20px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-red); }
 
-        /* إضافات الخرائط المنفصلة لعدم تخريب الستايل */
-        .map-overlay { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); }
-        .map-wrapper { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        #mapZoomImg { max-width: 90%; max-height: 90%; cursor: grab; transition: transform 0.1s ease; }
+        /* ---------------- الخرائط (Cinema Mode) ---------------- */
+        .map-overlay { 
+            display: none; position: fixed; inset: 0; z-index: 9999; 
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+        }
+        .map-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        #mapZoomImg { 
+            max-width: 90%; max-height: 90%; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 50px 150px rgba(0,0,0,1), 0 0 80px rgba(239, 35, 60, 0.1); cursor: grab; 
+        }
         #mapZoomImg:active { cursor: grabbing; }
-        .close-map { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 10000; }
-        .close-map:hover { color: #ff3333; }
+        .close-map { 
+            position: absolute; top: 50px; right: 60px; width: 70px; height: 70px; 
+            background: rgba(255,255,255,0.03); border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 40px; color: var(--text-dim); cursor: pointer; transition: var(--ease-apple) 0.6s; z-index: 10000; border: 1px solid var(--glass-border);
+        }
+        .close-map:hover { background: rgba(239, 35, 60, 0.2); border-color: var(--neon-red); color: #fff; transform: rotate(180deg) scale(1.1); box-shadow: 0 0 30px rgba(239, 35, 60, 0.4); }
+
     </style>
 </head>
 <body>
+    <div class="ambient-orb"></div>
 
     <aside class="sidebar">
         <div class="sidebar-logo"><i class="fa-solid fa-house-medical-flag"></i><h2>الهلال الأحمر</h2></div>
