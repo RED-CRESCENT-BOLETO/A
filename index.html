@@ -163,7 +163,6 @@
             backdrop-filter: blur(20px);
         }
 
-        /* إضاءة تتبع الماوس وهمية بالـ CSS */
         .nav-card::before, .card::before, .vehicle-card::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 50%);
@@ -273,27 +272,30 @@
         /* ---------------- لوحة الترحيب (The Hero Section) ---------------- */
         .welcome-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; }
         
-        /* ميزة اللوجو الافتتاحية المضافة فقط */
+        /* -----------------------------------------------------------------
+           الميزة الجديدة: اللوجو الافتتاحي (Intro GIF)
+           ----------------------------------------------------------------- */
         .logo-wrapper {
             width: 300px; height: 300px; margin: 0 auto 60px; position: relative;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            transition: all 1.5s var(--ease-apple);
+            transition: all 1.2s var(--ease-apple);
             z-index: 1000;
+            opacity: 0; /* يبدأ مخفي حتى يتم تحميل الصورة */
         }
         
-        /* كلاس البداية للوجو (سيكون كبيراً في الوسط) */
-        .logo-intro {
+        .logo-wrapper.loaded { opacity: 1; } /* يظهر فور اكتمال التحميل */
+
+        .logo-intro-center {
             position: fixed !important;
             top: 50% !important;
             left: 50% !important;
-            transform: translate(-50%, -50%) scale(2.5) !important;
+            transform: translate(-50%, -50%) scale(2.8) !important;
             z-index: 9999 !important;
         }
 
-        /* خلفية سوداء وقت الافتتاحية */
-        #introBg {
-            position: fixed; inset: 0; background: var(--base-dark); z-index: 9998;
-            transition: opacity 1s ease;
+        #introOverlay {
+            position: fixed; inset: 0; background: #000; z-index: 9998;
+            transition: opacity 0.8s ease;
         }
 
         .logo-wrapper::before {
@@ -342,7 +344,7 @@
     </style>
 </head>
 <body>
-    <div id="introBg"></div>
+    <div id="introOverlay"></div>
 
     <div class="ambient-orb"></div>
 
@@ -363,8 +365,8 @@
         
         <div id="home" class="content-section active">
             <div class="welcome-box">
-                <div id="mainLogo" class="logo-wrapper logo-intro">
-                    <img src="1c544b8e7d362f87.gif" class="main-logo-gif">
+                <div id="introLogoWrapper" class="logo-wrapper logo-intro-center">
+                    <img id="gifElement" src="1c544b8e7d362f87.gif" class="main-logo-gif">
                 </div>
                 <h1>مرحباً بكم في موقع الهلال الأحمر بمقاطعة بوليتو</h1>
                 <div class="quick-nav">
@@ -793,17 +795,34 @@
     </div>
 
     <script>
-        // دالة الدخول السينمائي للوجو
-        window.addEventListener('load', () => {
-            const logo = document.getElementById('mainLogo');
-            const bg = document.getElementById('introBg');
+        /* -----------------------------------------------------------------
+           برمجة اللوجو: يظهر فقط بعد اكتمال تحميل الـ GIF
+           ----------------------------------------------------------------- */
+        const gifImg = document.getElementById('gifElement');
+        const logoWrap = document.getElementById('introLogoWrapper');
+        const overlay = document.getElementById('introOverlay');
+
+        // وظيفة تبدأ الحركة
+        function startIntro() {
+            logoWrap.classList.add('loaded'); // يظهر اللوجو الآن لأنه تحمل
             
             setTimeout(() => {
-                logo.classList.remove('logo-intro');
-                bg.style.opacity = '0';
-                setTimeout(() => bg.style.display = 'none', 1000);
-            }, 1500);
-        });
+                logoWrap.classList.remove('logo-intro-center'); // يرجع لمكانه الطبيعي
+                overlay.style.opacity = '0'; // تختفي الشاشة السوداء
+                
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 800);
+            }, 1800); // يبقى في النص لمدة 1.8 ثانية
+        }
+
+        // التحقق إذا كان الـ GIF محملاً مسبقاً أو ننتظر تحميله
+        if (gifImg.complete) {
+            startIntro();
+        } else {
+            gifImg.onload = startIntro;
+        }
+        /* ----------------------------------------------------------------- */
 
         function showSection(sectionId) {
             document.querySelectorAll('.content-section').forEach(section => {
@@ -832,15 +851,11 @@
             updateTransform();
         }
 
-        function closeMap() {
-            document.getElementById('mapModal').style.display = 'none';
-        }
-
+        function closeMap() { document.getElementById('mapModal').style.display = 'none'; }
         function updateTransform() {
             const img = document.getElementById('mapZoomImg');
             img.style.transform = `translate(${x}px, ${y}px) scale(${currentScale})`;
         }
-
         function doZoom(e) {
             e.preventDefault();
             const delta = e.deltaY > 0 ? 0.8 : 1.2;
@@ -848,30 +863,12 @@
             currentScale = Math.min(Math.max(0.5, currentScale), 8);
             updateTransform();
         }
-
         const img = document.getElementById('mapZoomImg');
-        img.onmousedown = (e) => {
-            isPanning = true;
-            startX = e.clientX - x;
-            startY = e.clientY - y;
-        };
-        window.onmousemove = (e) => {
-            if (!isPanning) return;
-            x = e.clientX - startX;
-            y = e.clientY - startY;
-            updateTransform();
-        };
+        img.onmousedown = (e) => { isPanning = true; startX = e.clientX - x; startY = e.clientY - y; };
+        window.onmousemove = (e) => { if (!isPanning) return; x = e.clientX - startX; y = e.clientY - startY; updateTransform(); };
         window.onmouseup = () => isPanning = false;
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") closeMap();
-        });
-
-        function handleOutsideClick(e) {
-            if (e.target.id === 'mapModal' || e.target.className === 'map-wrapper') {
-                closeMap();
-            }
-        }
+        document.addEventListener('keydown', (e) => { if (e.key === "Escape") closeMap(); });
+        function handleOutsideClick(e) { if (e.target.id === 'mapModal' || e.target.className === 'map-wrapper') { closeMap(); } }
     </script>
 </body>
 </html>
