@@ -273,11 +273,29 @@
         /* ---------------- لوحة الترحيب (The Hero Section) ---------------- */
         .welcome-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; }
         
-        /* التعديل الجديد هنا للمحافظة على مكان اللوجو */
+        /* ميزة اللوجو الافتتاحية المضافة فقط */
         .logo-wrapper {
             width: 300px; height: 300px; margin: 0 auto 60px; position: relative;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transition: all 1.5s var(--ease-apple);
+            z-index: 1000;
         }
+        
+        /* كلاس البداية للوجو (سيكون كبيراً في الوسط) */
+        .logo-intro {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) scale(2.5) !important;
+            z-index: 9999 !important;
+        }
+
+        /* خلفية سوداء وقت الافتتاحية */
+        #introBg {
+            position: fixed; inset: 0; background: var(--base-dark); z-index: 9998;
+            transition: opacity 1s ease;
+        }
+
         .logo-wrapper::before {
             content: ""; position: absolute; inset: -10px; border-radius: 50%;
             background: conic-gradient(from 0deg, transparent 0%, rgba(239, 35, 60, 0.8) 50%, transparent 100%);
@@ -291,22 +309,6 @@
         
         .main-logo-gif { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 2; box-shadow: 0 0 80px rgba(0,0,0,0.9); }
         
-        /* ----------------- ميزة الأنيميشن الافتتاحية ----------------- */
-        .intro-active {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) scale(2.5) !important; /* حجم كبير في الوسط */
-            z-index: 9999 !important;
-            transition: all 1.2s var(--ease-apple) !important;
-        }
-        
-        .intro-overlay {
-            position: fixed; inset: 0; background: var(--base-dark); z-index: 9998;
-            transition: opacity 0.8s ease;
-        }
-        /* --------------------------------------------------------- */
-
         .quick-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; max-width: 1200px; margin: 70px auto 0; width: 100%; }
         .quick-nav .nav-card { padding: 50px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .quick-nav .nav-card i { font-size: 55px; margin-bottom: 30px; color: var(--text-dim); transition: 0.6s var(--ease-apple); }
@@ -340,7 +342,8 @@
     </style>
 </head>
 <body>
-    <div id="introOverlay" class="intro-overlay"></div>
+    <div id="introBg"></div>
+
     <div class="ambient-orb"></div>
 
     <aside class="sidebar">
@@ -360,7 +363,7 @@
         
         <div id="home" class="content-section active">
             <div class="welcome-box">
-                <div id="mainLogoWrapper" class="logo-wrapper intro-active">
+                <div id="mainLogo" class="logo-wrapper logo-intro">
                     <img src="1c544b8e7d362f87.gif" class="main-logo-gif">
                 </div>
                 <h1>مرحباً بكم في موقع الهلال الأحمر بمقاطعة بوليتو</h1>
@@ -790,21 +793,16 @@
     </div>
 
     <script>
-        // دالة الأنيميشن الافتتاحية للوجو
+        // دالة الدخول السينمائي للوجو
         window.addEventListener('load', () => {
-            const logoWrapper = document.getElementById('mainLogoWrapper');
-            const introOverlay = document.getElementById('introOverlay');
-
-            // ننتظر ثانية واحدة واللوجو كبير ثم نرجعه لمكانه
+            const logo = document.getElementById('mainLogo');
+            const bg = document.getElementById('introBg');
+            
             setTimeout(() => {
-                logoWrapper.classList.remove('intro-active');
-                introOverlay.style.opacity = '0';
-                
-                // إخفاء طبقة التعتيم تماماً بعد انتهاء الحركة
-                setTimeout(() => {
-                    introOverlay.style.display = 'none';
-                }, 800);
-            }, 1500); // 1.5 ثانية مدة البقاء في المنتصف
+                logo.classList.remove('logo-intro');
+                bg.style.opacity = '0';
+                setTimeout(() => bg.style.display = 'none', 1000);
+            }, 1500);
         });
 
         function showSection(sectionId) {
